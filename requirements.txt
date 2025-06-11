@@ -1,15 +1,38 @@
-Flask==3.0.0
+# GUI Framework
+PyQt5==5.15.9
+
+# HTTP Requests
 requests==2.31.0
-python-dotenv==1.0.0
-google-api-python-client==2.108.0
-reportlab==4.0.8
-PyPDF2==3.0.1
-Flask-Cors==4.0.0
-gunicorn==21.2.0
+aiohttp==3.8.5
+
+# Database
+SQLAlchemy==2.0.0
+
+# Data Handling & Export
+pandas
+numpy
+reportlab==4.0.4  # PDF generation
+openpyxl==3.1.2  # Excel support for pandas
+
+# Date/Time
 python-dateutil==2.8.2
-Flask-Limiter==3.5.0
-Werkzeug==3.0.1
-validate-email==1.3
-pytest==7.4.3
-black==23.11.0
-pylint==3.0.2
+
+# Environment Variables
+python-dotenv==1.0.0
+
+# API Handling & Rate Limiting
+pydantic==2.0.0
+ratelimit==2.2.1  # API rate limiting
+
+# Testing
+pytest==7.4.0
+pytest-qt==4.2.0
+pytest-mock==3.11.1
+pytest-cov==4.1.0  # Coverage reporting
+pytest-asyncio==0.21.1  # Async test support
+
+# Development
+black==23.3.0
+isort==5.12.0
+mypy==1.4.1
+pylint==2.17.5  # Additional linting

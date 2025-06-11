@@ -1,166 +1,201 @@
-# Weather Application
+# Weather App
 
-A comprehensive weather application that allows users to check current weather conditions, get forecasts, and maintain a history of weather queries. Built as part of the PM Accelerator program.
+A PyQt5-based weather application that displays current weather conditions and 5-day forecasts, with optional location media features and multiple export options.
 
-## Features
+## Core Features
 
-- Current weather information for any location
-- 5-day weather forecast
-- Multiple location input formats support (ZIP code, coordinates, city names, landmarks)
-- Interactive map integration
-- Weather query history with CRUD operations
-- Data export in JSON and CSV formats
-- Responsive design
-- Developer information and PM Accelerator link
+- Location input supporting multiple formats:
+  - City names
+  - ZIP codes
+  - Coordinates (decimal or degrees)
+- Current weather display with:
+  - Temperature (°C/°F toggle)
+  - Feels like temperature
+  - Humidity
+  - Wind speed
+  - Weather condition
+- 5-day forecast with:
+  - Daily temperature ranges
+  - Weather conditions
+  - Precipitation probability
+- Data export options:
+  - JSON export
+  - CSV export
+  - PDF report generation
+- Input validation and error handling
+- Clean, modern user interface
+- Rate limiting and error handling for APIs
 
-## Tech Stack
+## Optional Features
 
-### Backend
-- Python 3.8+
-- Flask (Web framework)
-- SQLite (Database)
-- OpenWeather API
-- Google Maps API
-- YouTube API (optional)
+The following features require additional API keys:
+- Location media integration:
+  - YouTube travel videos (requires YouTube Data API)
+  - Google Maps static view (requires Google Maps API)
+  - Loading indicators for API calls
+- "About" dialog with placeholder company information.
 
-### Frontend
-- HTML5/CSS3
-- JavaScript (ES6+)
-- Bootstrap 5
-- Axios (HTTP client)
+## Setup
 
-## Prerequisites
-
-- Python 3.8 or higher
-- Node.js and npm (for frontend development tools)
-- OpenWeather API key
-- Google Maps API key (optional)
-- YouTube API key (optional)
-
-## Installation
-
-1. Clone the repository:
+1. Make sure you have Python 3.8+ installed
+2. Clone this repository
+3. Create and activate a virtual environment (recommended):
 ```bash
-git clone https://github.com/yourusername/weather-app.git
-cd weather-app
-```
-
-2. Create and activate a virtual environment:
-```bash
-python -m venv venv
 # On Windows
+python -m venv venv
 venv\Scripts\activate
+
 # On macOS/Linux
+python3 -m venv venv
 source venv/bin/activate
 ```
-
-3. Install Python dependencies:
+4. Install the required dependencies:
 ```bash
-pip install -r requirements.txt
-```
+# For users: Basic installation
+pip install .
 
-4. Create a `.env` file in the project root with your API keys:
+# For developers: Install with development dependencies
+pip install -e ".[dev]"
 ```
-OPENWEATHER_API_KEY=your_openweather_api_key
-GOOGLE_MAPS_API_KEY=your_google_maps_api_key
-YOUTUBE_API_KEY=your_youtube_api_key
+4. Get API keys:
+   
+   Required:
+   - [OpenWeatherMap API](https://openweathermap.org/api) - Core weather functionality
+   
+   Optional:
+   - [YouTube Data API](https://console.cloud.google.com/apis/library/youtube.googleapis.com) - For location videos
+   - [Google Maps API](https://console.cloud.google.com/apis/library/maps-backend.googleapis.com) - For location maps
+
+5. Create a `.env` file from the template:
+```bash
+cp .env.template .env
 ```
+6. Configure your `.env` file:
+
+   Minimal setup (required):
+   ```
+   OPENWEATHERMAP_API_KEY=your_api_key_here
+   ```
+   
+   Optional features:
+   ```
+   YOUTUBE_API_KEY=your_youtube_api_key_here     # For travel videos
+   GOOGLE_MAPS_API_KEY=your_maps_api_key_here    # For location maps
+   ```
 
 ## Running the Application
 
-1. Start the Flask backend server:
+From the project root directory:
+
 ```bash
-# From the project root
-python backend/main.py
+python src/main.py
 ```
 
-2. Open `frontend/index.html` in your web browser or serve it using a local development server.
+## Running Tests
 
-## API Endpoints
+The project uses pytest with custom markers for different test categories:
 
-### Weather Operations
-- `GET /api/weather/current` - Get current weather
-- `GET /api/weather/forecast` - Get weather forecast
-- `GET /api/weather` - Get weather query history
-- `POST /api/weather` - Create new weather query
-- `PUT /api/weather/:id` - Update weather query
-- `DELETE /api/weather/:id` - Delete weather query
+```bash
+# Run all tests
+pytest
 
-### Export Operations
-- `GET /api/weather/export?format=json` - Export data as JSON
-- `GET /api/weather/export?format=csv` - Export data as CSV
+# Run specific test categories
+pytest -m "not slow"        # Skip slow tests
+pytest -m "not integration" # Skip integration tests
+pytest -m "ui"             # Run only UI tests
 
-### Location Media
-- `GET /api/location/media` - Get location media (maps, videos)
+# Run with coverage report
+pytest --cov=src --cov-report=html
+```
+
+### Test Categories
+- `integration`: Tests that interact with external APIs
+- `ui`: Tests for PyQt5 interface components
+- `slow`: Tests that take longer to execute
+
+## Troubleshooting
+
+Common issues and solutions:
+
+1. PyQt5 Installation Issues:
+   ```bash
+   # On Ubuntu/Debian
+   sudo apt-get install python3-pyqt5
+   
+   # On Windows
+   pip install --upgrade pip setuptools wheel
+   pip install PyQt5
+   ```
+
+2. Environment Variables Not Loading:
+   - Ensure `.env` file exists in project root
+   - Verify file permissions
+   - Check for proper line endings (no spaces after values)
+
+3. Test Import Errors:
+   - Verify you've installed development dependencies: `pip install -e ".[dev]"`
+   - Check that PYTHONPATH includes the project root
+   - Ensure pytest.ini is in project root
+
+4. API Connection Issues:
+   - Verify API keys in `.env` file
+   - Check internet connection
+   - Confirm API service status
 
 ## Project Structure
+
 ```
-weather-app/
-├── backend/
-│   ├── main.py                 # Flask application
-│   ├── weather_service.py      # Weather API client
-│   ├── database.py            # Database operations
-│   ├── validators/
-│   │   ├── location.py
-│   │   └── date_range.py
-│   └── error_handlers/
-│       └── api_errors.py
-├── frontend/
-│   ├── index.html
-│   ├── styles/
-│   │   └── main.css
-│   ├── js/
-│   │   ├── app.js
-│   │   ├── weather.js
-│   │   ├── maps.js
-│   │   └── export.js
-│   └── assets/
-│       └── weather-icons/
-├── tests/
-│   ├── test_weather_service.py
-│   ├── test_validators.py
-│   └── test_database.py
-├── requirements.txt
-└── README.md
+weather_app/
+├── src/                    # Source code
+│   ├── main.py            # Application entry point
+│   ├── ui/                # User interface components
+│   ├── core/              # Core functionality and API services
+│   ├── database/          # Database operations
+│   └── utils/             # Utility functions and export handlers
+├── tests/                 # Unit and integration tests
+├── requirements.txt       # Dependencies
+└── .env                   # Configuration (create from .env.template)
 ```
 
-## Development
+## Export Functionality
 
-1. The application uses SQLite for data persistence
-2. All dates are stored in ISO format
-3. Temperature is stored in Celsius
-4. The frontend communicates with the backend via RESTful APIs
-5. Error handling is implemented across all layers
-6. Rate limiting is enabled on all endpoints
+The application supports three export formats:
 
-## Testing
+1. JSON Export
+   - Complete weather data in structured format
+   - Includes current conditions and forecast
+   - Ideal for data processing and API integration
 
-Run the test suite:
-```bash
-python -m pytest tests/
-```
+2. CSV Export
+   - Tabular format for spreadsheet applications
+   - Separate sections for current weather and forecast
+   - Easy to import into Excel or other tools
 
-## Error Handling
+3. PDF Export
+   - Professional report format
+   - Includes weather data visualization
+   - Suitable for sharing and printing
 
-The application implements comprehensive error handling:
-- Input validation
-- API error handling
-- Database error handling
-- Rate limiting
-- Fallback mechanisms for API failures
+## API Rate Limits
+
+The application implements rate limiting to respect API quotas:
+
+Required APIs:
+- OpenWeatherMap API: As per your API plan
+
+Optional APIs (only if configured):
+- YouTube Data API: 30 requests per minute
+- Google Maps API: 60 requests per minute
 
 ## Contributing
 
-1. Fork the repository
-2. Create your feature branch: `git checkout -b feature/YourFeature`
-3. Commit your changes: `git commit -m 'Add YourFeature'`
-4. Push to the branch: `git push origin feature/YourFeature`
-5. Submit a pull request
+1. Follow PEP 8 style guide
+2. Add type hints to new code
+3. Include docstrings for modules, classes, and functions
+4. Write unit tests for new features
+5. Implement integration tests for API features
+6. Test changes before submitting
 
 ## License
 
-This project is part of the PM Accelerator program assessment.
-
-## Author
-
-[Your Name]
+MIT License
