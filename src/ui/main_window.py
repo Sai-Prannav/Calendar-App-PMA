@@ -59,7 +59,7 @@ class MainWindow(QMainWindow):
         self.weather_service = weather_service
         self.api_services = api_services
         self.session_manager = SessionManager()
-        self.setWindowTitle("Weather App")
+        self.setWindowTitle("Weather App by Sai Prannav")
         self.setMinimumSize(QSize(800, 600))
         
         # Create central widget and layout
@@ -138,7 +138,7 @@ class MainWindow(QMainWindow):
         footer_layout = QHBoxLayout()
         
         # Company info button
-        company_btn = QPushButton("About PM Accelerator")
+        company_btn = QPushButton("Info About PM Accelerator")
         company_btn.clicked.connect(self._show_about_dialog)
         footer_layout.addWidget(company_btn)
         
@@ -146,8 +146,8 @@ class MainWindow(QMainWindow):
 
     def _show_about_dialog(self):
         info_text = (
-            "PM Accelerator is a program for aspiring product managers. "
-            "(Replace this text with your own company description.)"
+            "The Product Manager Accelerator Program is designed to support PM professionals through every stage of their careers. From students looking for entry-level jobs to Directors looking to take on a leadership role, our program has helped over hundreds of students fulfill their career aspirations."
+            "Our Product Manager Accelerator community are ambitious and committed. Through our program they have learnt, honed and developed new PM and leadership skills, giving them a strong foundation for their future endeavors."
         )
         QMessageBox.information(self, "About PM Accelerator", info_text)
 
